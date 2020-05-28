@@ -156,6 +156,8 @@ def convert_shape_format(shape):
       for i, pos in enumerate(positions):
             positions[i] = ([pos[0] - 2, pos[1] - 4])
 
+      return positions
+
 
 def valid_space(shape, grid):
       accepted_pos = [[(i, j) for j in range(10) if grid[i][j] == (0,0,0)] for i in range(20)]
@@ -215,7 +217,7 @@ def draw_window(surface, grid):
       surface.blit(label, (top_left_x + play_width/2 - (label.get_width()/2), 30))
 
       for i in range(len(grid)):
-            for j in range(len(grid[1])):
+            for j in range(len(grid[i])):
                   pygame.draw.rect(surface, grid[i][j], (top_left_x + j*block_size, top_left_y+ i*block_size, block_size, block_size))
 
       pygame.draw.rect(surface, (255,0,0), (top_left_x, top_left_y, play_width, play_height), 4)                     
@@ -254,14 +256,14 @@ def main(win):
                         run = False
 
                   if event.type == pygame.KEYDOWN:
-                        if event.type == pygame.K_LEFT:
+                        if event.key == pygame.K_LEFT:
                               current_piece.x -= 1
                               if not(valid_space(current_piece, grid)):
-                                    current_piece += 1
+                                    current_piece.x += 1
                         if event.key == pygame.K_RIGHT:  
                               current_piece.x += 1
                               if not(valid_space(current_piece, grid)):
-                                    current_piece -= 1
+                                    current_piece.x -= 1
                         if event.key == pygame.K_DOWN:
                               current_piece.y += 1
                               if not(valid_space(current_piece, grid)):
@@ -269,7 +271,7 @@ def main(win):
                         if event.key == pygame.K_UP:
                               current_piece.rotation += 1
                               if not(valid_space(current_piece, grid)):
-                                    current_piece -= 1
+                                    current_piece.rotation -= 1
 
             shape_pos = convert_shape_format(current_piece)
 
